@@ -1,4 +1,5 @@
 import { calculate } from './calculator.js';
+import { bindCalculationInteractions } from './interaction.js';
 
 const $ = s => document.querySelector(s);
 const won = n => `${Math.round(n).toLocaleString('ko-KR')}원`;
@@ -33,6 +34,7 @@ function render() {
   current = calculate(getValues()); const r = current;
   $('#hero-price').textContent = shortWon(r.price);
   $('#extra-summary').innerHTML = `약 ${Math.round(r.incidental / 10_000).toLocaleString()}만원 <i>+ α</i>`;
+  $('#incidental-subtotal').textContent = won(r.incidental);
   $('#grand-total').textContent = won(r.total);
   $('#cost-list').innerHTML = rows(r).map(([id,title,desc,value,color,badge]) => `<button class="cost-row" data-detail="${id}"><span class="cost-icon ${color}">↗</span><span class="cost-copy"><b>${title}${badge ? `<mark>${badge}</mark>`:''}</b><small>${desc}</small></span><strong>${value}</strong><i>›</i></button>`).join('');
   $('#cash-equation').innerHTML = `<span>${shortWon(r.price)}<small>매매가</small></span><i>−</i><span>${shortWon(r.paid)}<small>기지급금</small></span><i>−</i><span>${shortWon(r.loan)}<small>대출금</small></span><i>＋</i><span>${shortWon(r.incidental)}<small>부대비용</small></span>`;
@@ -56,10 +58,15 @@ function openDetail(type) {
   $('#overlay').hidden=false; document.body.classList.add('modal-open');
 }
 
-inputs.forEach(id => { const el=$(`#${id}`); el.addEventListener('input',()=>{syncInput(el); render();}); });
-document.querySelectorAll('input[type=radio]').forEach(el=>el.addEventListener('change',render));
-document.querySelectorAll('.chips').forEach(group=>group.addEventListener('click',e=>{if(!e.target.dataset.value)return; const el=$(`#${group.dataset.target}`);el.value=Number(e.target.dataset.value).toLocaleString();group.querySelectorAll('button').forEach(x=>x.classList.toggle('active',x===e.target));syncInput(el);render();}));
-$('#calculator-form').addEventListener('submit',e=>{e.preventDefault();render();$('#results').scrollIntoView({behavior:'smooth'});});
+bindCalculationInteractions({
+  moneyInputs: inputs.map(id => $(`#${id}`)),
+  chipGroups: document.querySelectorAll('.chips'),
+  form: $('#calculator-form'),
+  resolveInput: id => $(`#${id}`),
+  syncInput,
+  render,
+  scrollToResults: () => $('#results').scrollIntoView({behavior:'smooth'})
+});
 function close(){ $('#overlay').hidden=true;document.body.classList.remove('modal-open'); }
 $('.close-x').onclick=close;$('.close-bottom').onclick=close;$('#overlay').onclick=e=>{if(e.target===$('#overlay'))close();};document.addEventListener('keydown',e=>{if(e.key==='Escape')close();});
 render();
