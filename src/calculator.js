@@ -30,7 +30,27 @@ export function contractStamp(price) {
   return price <= 1_000_000_000 ? 150_000 : 350_000;
 }
 
-export function calculate({ price, firstHome, over85, loan, paid, legal = 800_000, bond = null }) {
+export function legalBasicFee(price) {
+  if (price <= 50_000_000) return 210_000;
+  if (price <= 100_000_000) return Math.floor(210_000 + (price - 50_000_000) * 10 / 10_000);
+  if (price <= 300_000_000) return Math.floor(260_000 + (price - 100_000_000) * 9 / 10_000);
+  if (price <= 500_000_000) return Math.floor(440_000 + (price - 300_000_000) * 8 / 10_000);
+  if (price <= 1_000_000_000) return Math.floor(600_000 + (price - 500_000_000) * 7 / 10_000);
+  if (price <= 2_000_000_000) return Math.floor(950_000 + (price - 1_000_000_000) * 5 / 10_000);
+  if (price <= 20_000_000_000) return Math.floor(1_450_000 + (price - 2_000_000_000) * 4 / 10_000);
+  return Math.floor(8_650_000 + (price - 20_000_000_000) / 10_000);
+}
+
+export function formatKoreanAmount(value) {
+  const amount = Math.round(value);
+  if (!amount) return '0원';
+  const eok = Math.floor(amount / 100_000_000);
+  const man = Math.round((amount % 100_000_000) / 10_000);
+  const units = `${eok ? `${eok}억${man ? '' : '원'}` : ''}${man ? ` ${man.toLocaleString('ko-KR')}만원` : ''}`.trim();
+  return `약 ${units}`;
+}
+
+export function calculate({ price, firstHome, over85, loan, paid, bond = null }) {
   const rate = acquisitionRate(price);
   const acquisitionBefore = floor10(price * rate);
   const reduction = firstHome && price <= 1_200_000_000 ? Math.min(2_000_000, acquisitionBefore) : 0;
@@ -41,6 +61,7 @@ export function calculate({ price, firstHome, over85, loan, paid, legal = 800_00
   const broker = brokerageInfo(price);
   const brokerage = Math.min(floor10(price * broker.rate), broker.cap ?? Infinity);
   const loanStamp = loanStampInfo(loan);
+  const legal = legalBasicFee(price);
   const incidental = acquisitionTotal + brokerage + legal + (bond ?? 0) + loanStamp.customer;
   const total = price + incidental;
   const cash = price - paid - loan + incidental;
