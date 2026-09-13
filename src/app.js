@@ -65,8 +65,11 @@ bindCalculationInteractions({
   resolveInput: id => $(`#${id}`),
   syncInput,
   render,
+  revealResults: () => {
+    $('#result-empty').hidden = true;
+    $('#result-content').hidden = false;
+  },
   scrollToResults: () => $('#results').scrollIntoView({behavior:'smooth'})
 });
 function close(){ $('#overlay').hidden=true;document.body.classList.remove('modal-open'); }
 $('.close-x').onclick=close;$('.close-bottom').onclick=close;$('#overlay').onclick=e=>{if(e.target===$('#overlay'))close();};document.addEventListener('keydown',e=>{if(e.key==='Escape')close();});
-render();

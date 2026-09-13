@@ -53,6 +53,12 @@
 
         <section class="results" id="results" aria-live="polite">
           <div class="section-heading light"><span>02</span><div><p>MY ESTIMATE</p><h2>예상 비용 확인하기</h2></div><small>계산 버튼 클릭 시 반영</small></div>
+          <div class="result-empty" id="result-empty">
+            <span aria-hidden="true">₩</span>
+            <h3>아직 계산된 비용이 없어요</h3>
+            <p>내 조건을 입력한 뒤<br /><b>예상 비용 계산하기</b> 버튼을 눌러주세요.</p>
+          </div>
+          <div id="result-content" hidden>
           <article class="hero-card">
             <p><strong id="hero-price">7억원</strong> 집을 사기 위해<br />집값 외에 필요한 비용은?</p>
             <h3 id="extra-summary">약 1,451만원 <i>+ α</i></h3>
@@ -65,6 +71,7 @@
             <article class="cash-card"><div class="cash-title"><span>잔금일에 통장에 필요한 금액</span><h3>잔금일 추가 준비 현금</h3></div><div id="cash-equation" class="equation"></div><strong id="cash-total"></strong><p id="cash-warning" class="warning" hidden></p></article>
           </div>
           <p class="result-note">매매계약 인지세는 부담 방식이 달라질 수 있어 부대비용 합계에서 제외했어요.</p>
+          </div>
         </section>
       </div>
       <section class="disclaimer"><span>꼭 확인해주세요</span><p>2026년 기준 예상 계산입니다.<br />실제 세액과 비용은 거래일, 주택 조건, 감면 요건, 법무사·중개사·금융기관 등에 따라 달라질 수 있습니다.<br />계약 또는 잔금 전 반드시 관할 지자체, 세무 전문가, 법무사, 금융기관 등을 통해 최종 확인하세요.</p></section>
