@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f7f5ee" />
+    <meta name="description" content="서울 아파트 첫 매수자의 취득세와 잔금일 필요 현금을 계산합니다." />
+    <title>내 집 마련 예상 비용 계산기</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@700&family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./src/style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#">내 집 비용 노트 <span>SEOUL</span></a>
+      <span class="header-tag">첫 주택 구매자를 위한 계산기</span>
+    </header>
+
+    <main>
+      <section class="intro">
+        <div><p class="eyebrow">HOME BUYING GUIDE · 2026</p><h1>내 집 마련,<br /><em>집값만 준비하면 될까요?</em></h1></div>
+        <div class="intro-copy"><p>취득세, 중개보수, 등기비용까지<br />실제 필요한 금액을 미리 계산해보세요.</p><div class="notice"><span>✓</span> 현재 무주택이며 이번 매수 후 1주택이 되는 경우를 기준으로 계산합니다.</div></div>
+      </section>
+
+      <div class="workspace">
+        <section class="input-panel" aria-labelledby="input-title">
+          <div class="section-heading"><span>01</span><div><p>MY CONDITIONS</p><h2 id="input-title">내 조건 입력하기</h2></div></div>
+          <form id="calculator-form">
+            <div class="field-block">
+              <label for="purchase-price">매매가 <small>(집값)</small></label>
+              <div class="money-input"><input id="purchase-price" inputmode="numeric" value="700,000,000" aria-describedby="price-korean" /><span>원</span></div>
+              <p class="korean-money" id="price-korean">약 7억원</p>
+              <div class="chips" data-target="purchase-price">
+                <button type="button" data-value="300000000">3억</button><button type="button" data-value="500000000">5억</button><button type="button" data-value="700000000" class="active">7억</button><button type="button" data-value="1000000000">10억</button><button type="button" data-value="1200000000">12억</button><button type="button" data-value="1500000000">15억</button>
+              </div>
+            </div>
+            <div class="field-row">
+              <fieldset><legend>생애최초 주택 구입 여부</legend><div class="segmented"><label><input type="radio" name="firstHome" value="yes" checked /><span>예</span></label><label><input type="radio" name="firstHome" value="no" /><span>아니오</span></label></div><p class="help">본인과 배우자의 과거 주택 보유 이력 등 법정 요건을 충족하는 경우를 의미합니다.</p></fieldset>
+              <fieldset><legend>전용면적</legend><div class="segmented"><label><input type="radio" name="area" value="under" checked /><span>85㎡ 이하</span></label><label><input type="radio" name="area" value="over" /><span>85㎡ 초과</span></label></div></fieldset>
+            </div>
+            <div class="field-block">
+              <label for="loan">대출금액</label><div class="money-input"><input id="loan" inputmode="numeric" value="400,000,000" /><span>원</span></div><p class="korean-money" id="loan-korean">약 4억원</p>
+              <div class="chips" data-target="loan"><button type="button" data-value="0">없음</button><button type="button" data-value="100000000">1억</button><button type="button" data-value="300000000">3억</button><button type="button" data-value="400000000" class="active">4억</button><button type="button" data-value="500000000">5억</button><button type="button" data-value="700000000">7억</button></div>
+            </div>
+            <div class="field-block">
+              <label for="paid">이미 지급한 매매대금</label><p class="field-description">계약금 + 중도금 등 현재까지 지급한 금액</p><div class="money-input"><input id="paid" inputmode="numeric" value="0" /><span>원</span></div><p class="korean-money" id="paid-korean">0원</p>
+            </div>
+            <details class="settings"><summary><span><b>기타 설정</b><small>직접 조정할 항목이 있나요?</small></span><i>＋</i></summary><div class="settings-body"><label for="legal">법무·등기 예상비 <mark>예상</mark></label><div class="money-input compact"><input id="legal" inputmode="numeric" value="800,000" /><span>원</span></div><label for="bond">국민주택채권 예상비용 <small>선택 입력</small></label><div class="money-input compact"><input id="bond" inputmode="numeric" placeholder="직접 입력한 경우에만 포함" /><span>원</span></div></div></details>
+            <button class="calculate" id="calculate-button" type="button">예상 비용 계산하기 <span>→</span></button>
+          </form>
+        </section>
+
+        <section class="results" id="results" aria-live="polite">
+          <div class="section-heading light"><span>02</span><div><p>MY ESTIMATE</p><h2>예상 비용 확인하기</h2></div><small id="result-status"></small></div>
+          <div class="empty-state" id="empty-state"><span>₩</span><p>조건을 입력한 후<br /><b>예상 비용 계산하기</b>를 눌러주세요.</p></div>
+          <div id="result-content" hidden>
+          <article class="hero-card">
+            <p><strong id="hero-price">7억원</strong> 집을 사기 위해<br />집값 외에 필요한 비용은?</p>
+            <h3 id="extra-summary">약 1,451만원 <i>+ α</i></h3>
+            <p class="alpha">+ α = 국민주택채권, 중개보수 부가세 등 거래별 변동비용</p>
+          </article>
+          <div class="cost-list" id="cost-list"></div>
+          <article class="subtotal-card">
+            <div><span>선택한 조건으로 계산한 중간합계</span><h3>예상 부대비용 소계</h3></div>
+            <strong id="ancillary-subtotal"></strong>
+          </article>
+          <p class="subtotal-note">※ 국민주택채권 미입력액, 매매계약 인지세, 중개보수 부가세 등은 합계에서 제외될 수 있습니다.</p>
+          <div class="total-cards">
+            <article><div><span>매매가 + 부대비용</span><h3>총 매수비용</h3></div><strong id="grand-total"></strong></article>
+            <article class="cash-card"><div class="cash-title"><span>잔금일에 통장에 필요한 금액</span><h3>잔금일 추가 준비 현금</h3></div><div id="cash-equation" class="equation"></div><strong id="cash-total"></strong><p id="cash-warning" class="warning" hidden></p></article>
+          </div>
+          <p class="result-note">매매계약 인지세는 부담 방식이 달라질 수 있어 부대비용 합계에서 제외했어요.</p>
+          </div>
+        </section>
+      </div>
+      <section class="disclaimer"><span>꼭 확인해주세요</span><p>2026년 기준 예상 계산입니다.<br />실제 세액과 비용은 거래일, 주택 조건, 감면 요건, 법무사·중개사·금융기관 등에 따라 달라질 수 있습니다.<br />계약 또는 잔금 전 반드시 관할 지자체, 세무 전문가, 법무사, 금융기관 등을 통해 최종 확인하세요.</p></section>
+    </main>
+
+    <div class="overlay" id="overlay" hidden><aside class="detail-panel" role="dialog" aria-modal="true" aria-labelledby="detail-title"><button class="close-x" aria-label="상세보기 닫기">×</button><div id="detail-content"></div><button class="close-bottom">확인했어요</button></aside></div>
+    <script type="module" src="./src/app.js"></script>
+  </body>
+</html>
