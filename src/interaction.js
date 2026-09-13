@@ -5,6 +5,7 @@ export function bindCalculationInteractions({
   resolveInput,
   syncInput,
   render,
+  revealResults,
   scrollToResults
 }) {
   moneyInputs.forEach(input => {
@@ -26,6 +27,7 @@ export function bindCalculationInteractions({
   form.addEventListener('submit', event => {
     event.preventDefault();
     render();
+    revealResults();
     scrollToResults();
   });
 }

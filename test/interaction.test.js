@@ -25,7 +25,7 @@ function setup() {
   const chip = new Element({ dataset: { value: '1000000000' } });
   chip.classList = { toggle: () => {} };
   chips.buttons = [chip];
-  const calls = { sync: 0, render: 0, scroll: 0 };
+  const calls = { sync: 0, render: 0, reveal: 0, scroll: 0 };
   bindCalculationInteractions({
     moneyInputs: [price],
     chipGroups: [chips],
@@ -33,6 +33,7 @@ function setup() {
     resolveInput: () => price,
     syncInput: () => { calls.sync += 1; },
     render: () => { calls.render += 1; },
+    revealResults: () => { calls.reveal += 1; },
     scrollToResults: () => { calls.scroll += 1; }
   });
   return { price, form, chips, chip, calls };
@@ -41,18 +42,18 @@ function setup() {
 test('typing synchronizes the amount helper without recalculating results', () => {
   const { price, calls } = setup();
   price.dispatchEvent(new Event('input'));
-  assert.deepEqual(calls, { sync: 1, render: 0, scroll: 0 });
+  assert.deepEqual(calls, { sync: 1, render: 0, reveal: 0, scroll: 0 });
 });
 
 test('amount chips synchronize the input without recalculating results', () => {
   const { price, chips, chip, calls } = setup();
   chips.dispatchEvent(click(chip));
   assert.equal(price.value, '1,000,000,000');
-  assert.deepEqual(calls, { sync: 1, render: 0, scroll: 0 });
+  assert.deepEqual(calls, { sync: 1, render: 0, reveal: 0, scroll: 0 });
 });
 
 test('submitting is the only interaction that recalculates and scrolls to results', () => {
   const { form, calls } = setup();
   form.dispatchEvent(new Event('submit', { cancelable: true }));
-  assert.deepEqual(calls, { sync: 0, render: 1, scroll: 1 });
+  assert.deepEqual(calls, { sync: 0, render: 1, reveal: 1, scroll: 1 });
 });
